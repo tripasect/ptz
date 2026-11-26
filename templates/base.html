@@ -4,13 +4,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}تمدید بیمه تکمیلی{% endblock %}</title>
+  <title>{% block title %}سامانهٔ تمدید بیمهٔ تکمیلی{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'renewals/styles.css' %}">
 </head>
 <body>
   <header class="topbar">
     <div class="bar">
-      <a class="brand" href="{% url 'home' %}">تمدید بیمه تکمیلی</a>
+      <a class="brand" href="{% url 'home' %}">سامانهٔ تمدید بیمهٔ تکمیلی</a>
       <nav class="nav">
         {% if user.is_authenticated %}
           {% if user.employee %}
@@ -21,11 +21,18 @@
               <a href="{% url 'hr_request_list' %}">بررسی درخواست‌ها</a>
             {% endif %}
           {% endfor %}
-          <span class="who">{{ user.get_full_name|default:user.username }}</span>
           <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit" class="linkish">خروج</button>
           </form>
+          <span class="who">
+            {{ user.get_full_name|default:user.username }}
+            ·
+            {% if user.employee %}کارمند{% endif %}
+            {% for group in user.groups.all %}
+              {% if group.name == "hr" %}{% if user.employee %} و {% endif %}منابع انسانی{% endif %}
+            {% endfor %}
+          </span>
         {% endif %}
       </nav>
     </div>
@@ -40,5 +47,20 @@
     {% endif %}
     {% block content %}{% endblock %}
   </main>
+  <dialog id="confirm-dialog">
+    <form method="dialog">
+      <p class="eyebrow">مطمئن هستید؟</p>
+      <p>برای ادامه، این عبارت را بنویسید: <strong id="confirm-word"></strong></p>
+      <input id="confirm-input" type="text" autocomplete="off" aria-label="عبارت تأیید">
+      <p id="confirm-error" class="field-error" hidden>عبارت درست نیست.</p>
+      <div class="confirm-actions">
+        <button type="submit" value="cancel" class="button secondary">انصراف</button>
+        <button type="submit" value="ok" class="button">ادامه</button>
+      </div>
+    </form>
+  </dialog>
+  <script src="{% static 'renewals/digits.js' %}"></script>
+  <script src="{% static 'renewals/confirm.js' %}"></script>
+  <script src="{% static 'renewals/jalali-picker.js' %}"></script>
 </body>
 </html>

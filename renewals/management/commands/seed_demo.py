@@ -91,7 +91,7 @@ class Command(BaseCommand):
         self.stdout.write("کارمند: sara.karimi / %s" % EMPLOYEE_PASSWORD)
         self.stdout.write("کارمند دوم (برای آزمون دسترسی): reza.ahmadi / %s" % OTHER_EMPLOYEE_PASSWORD)
         self.stdout.write("منابع انسانی: hr.nazari / %s" % HR_PASSWORD)
-        self.stdout.write("همسر نمونه برای افزودن در دوره جدید: مریم کریمی، کد ملی 0087654326، تولد 1991-03-15")
+        self.stdout.write("همسر نمونه برای افزودن در دوره جدید: مریم کریمی، کد ملی 0087654326، تولد 1369/12/24")
 
 
 def _user(username, password, first_name, last_name):

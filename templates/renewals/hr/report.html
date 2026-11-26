@@ -26,13 +26,13 @@
       <tbody>
         {% for row in report.rows %}
           <tr>
-            <td>{{ row.label }}</td>
-            <td id="status-{{ row.status }}">{{ row.total }}</td>
+            <td data-label="وضعیت">{{ row.label }}</td>
+            <td data-label="تعداد درخواست" id="status-{{ row.status }}">{{ row.total }}</td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
-    <p>افراد انتخاب‌شده در درخواست‌های تأییدشده: <strong id="approved-people">{{ report.approved_people }}</strong></p>
+    <p>تعداد افراد انتخاب‌شده برای پوشش در درخواست‌های تأییدشده: <strong id="approved-people">{{ report.approved_people }}</strong></p>
   {% else %}
     <p>دوره‌ای برای گزارش وجود ندارد.</p>
   {% endif %}

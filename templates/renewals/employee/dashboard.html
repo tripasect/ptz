@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load jalali %}
 {% block title %}درخواست‌های من{% endblock %}
 {% block content %}
 <section class="heading">
@@ -12,7 +13,7 @@
 <section class="card">
   <h2>دوره جاری</h2>
   {% if open_period %}
-    <p>{{ open_period.title }}، از {{ open_period.coverage_start|date:"Y/m/d" }} تا {{ open_period.coverage_end|date:"Y/m/d" }}.</p>
+    <p>{{ open_period.title }}، از {{ open_period.coverage_start|jalali }} تا {{ open_period.coverage_end|jalali }}.</p>
     {% if not open_request %}
       <a class="button" href="{% url 'employee_request_create' %}">ایجاد درخواست این دوره</a>
     {% elif open_request.is_editable %}
@@ -35,10 +36,10 @@
     <tbody>
       {% for person in roster %}
         <tr>
-          <td>{{ person.full_name }}</td>
-          <td dir="ltr">{{ person.national_id }}</td>
-          <td>{{ person.get_relationship_display }}</td>
-          <td dir="ltr">{{ person.birth_date|date:"Y/m/d" }}</td>
+          <td data-label="نام">{{ person.full_name }}</td>
+          <td data-label="کد ملی"><span dir="ltr">{{ person.national_id }}</span></td>
+          <td data-label="نسبت">{{ person.get_relationship_display }}</td>
+          <td data-label="تاریخ تولد"><span dir="ltr">{{ person.birth_date|jalali }}</span></td>
         </tr>
       {% empty %}
         <tr><td colspan="4">فردی ثبت نشده است.</td></tr>
@@ -56,10 +57,10 @@
     <tbody>
       {% for item in requests %}
         <tr>
-          <td>{{ item.period.title }}</td>
-          <td><span class="badge {{ item.status }}">{{ item.get_status_display }}</span></td>
-          <td dir="ltr">{% if item.submitted_at %}{{ item.submitted_at|date:"Y/m/d H:i" }}{% else %}—{% endif %}</td>
-          <td><a href="{% url 'employee_request_detail' item.pk %}">مشاهده</a></td>
+          <td data-label="دوره">{{ item.period.title }}</td>
+          <td data-label="وضعیت"><span class="badge {{ item.status }}">{{ item.get_status_display }}</span></td>
+          <td data-label="آخرین ارسال"><span dir="ltr">{% if item.submitted_at %}{{ item.submitted_at|jalali:"datetime" }}{% else %}—{% endif %}</span></td>
+          <td data-label=""><a href="{% url 'employee_request_detail' item.pk %}">مشاهده</a></td>
         </tr>
       {% empty %}
         <tr><td colspan="4">هنوز درخواستی ثبت نشده است.</td></tr>

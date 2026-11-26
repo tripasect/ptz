@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load jalali %}
 {% block title %}درخواست‌ها{% endblock %}
 {% block content %}
 <section class="heading">
@@ -40,14 +41,14 @@
     <tbody>
       {% for item in requests %}
         <tr>
-          <td>{{ item.period.title }}</td>
-          <td>{{ item.employee.full_name }}</td>
-          <td dir="ltr">{{ item.employee.personnel_code }}</td>
-          <td>{{ item.employee.organizational_unit }}</td>
-          <td><span class="badge {{ item.status }}">{{ item.get_status_display }}</span></td>
-          <td>{{ item.member_count }}</td>
-          <td dir="ltr">{% if item.submitted_at %}{{ item.submitted_at|date:"Y/m/d H:i" }}{% else %}—{% endif %}</td>
-          <td><a href="{% url 'hr_request_detail' item.pk %}">بررسی</a></td>
+          <td data-label="دوره">{{ item.period.title }}</td>
+          <td data-label="کارمند">{{ item.employee.full_name }}</td>
+          <td data-label="کد پرسنلی"><span dir="ltr">{{ item.employee.personnel_code }}</span></td>
+          <td data-label="واحد">{{ item.employee.organizational_unit }}</td>
+          <td data-label="وضعیت"><span class="badge {{ item.status }}">{{ item.get_status_display }}</span></td>
+          <td data-label="افراد">{{ item.member_count }}</td>
+          <td data-label="ارسال"><span dir="ltr">{% if item.submitted_at %}{{ item.submitted_at|jalali:"datetime" }}{% else %}—{% endif %}</span></td>
+          <td data-label=""><a href="{% url 'hr_request_detail' item.pk %}">بررسی</a></td>
         </tr>
       {% empty %}
         <tr><td colspan="8">درخواستی با این فیلتر پیدا نشد.</td></tr>

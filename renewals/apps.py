@@ -4,4 +4,4 @@ from django.apps import AppConfig
 class RenewalsConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "renewals"
-    verbose_name = "تمدید بیمه تکمیلی"
+    verbose_name = "سامانهٔ تمدید بیمهٔ تکمیلی"

@@ -10,6 +10,7 @@ from renewals.services import (
     add_person,
     approve,
     create_draft,
+    include_person,
     remove_line,
     return_for_correction,
     submit,
@@ -82,6 +83,37 @@ class RuleTests(TestCase):
         with self.assertRaises(WorkflowError):
             remove_line(line, self.employee_user)
         self.assertTrue(renewal_request.coverage_lines.filter(pk=line.pk).exists())
+
+    def test_removed_dependent_can_be_added_back_to_the_same_request(self):
+        child = self.employee.insured_people.create(
+            first_name="آرمین",
+            last_name="کریمی",
+            national_id="0023456787",
+            relationship=Relationship.CHILD,
+            birth_date=date(2016, 7, 19),
+        )
+        renewal_request = create_draft(self.employee, self.period, self.employee_user)
+        line = renewal_request.coverage_lines.get(person=child)
+        remove_line(line, self.employee_user)
+        restored = include_person(renewal_request, self.employee_user, child)
+        self.assertEqual(restored.national_id, child.national_id)
+        self.assertEqual(renewal_request.coverage_lines.filter(person=child).count(), 1)
+
+    def test_national_id_cannot_be_repeated_with_different_digits(self):
+        renewal_request = create_draft(self.employee, self.period, self.employee_user)
+        with self.assertRaises(WorkflowError):
+            add_person(
+                renewal_request,
+                self.employee_user,
+                {
+                    "first_name": "محسن",
+                    "last_name": "اعلایی",
+                    "national_id": "۰۰۱۲۳۴۵۶۷۹",
+                    "relationship": Relationship.SPOUSE,
+                    "birth_date": date(1992, 1, 1),
+                },
+            )
+        self.assertEqual(renewal_request.coverage_lines.count(), 1)
 
     def test_invalid_national_id_is_rejected(self):
         renewal_request = create_draft(self.employee, self.period, self.employee_user)

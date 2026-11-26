@@ -37,7 +37,7 @@ class AcceptanceTests(TestCase):
                 "last_name": "کریمی",
                 "national_id": "0087654326",
                 "relationship": Relationship.SPOUSE,
-                "birth_date": "1991-03-15",
+                "birth_date": "1369/12/24",
             },
         )
         self.assertEqual(response.status_code, 302)
@@ -80,7 +80,7 @@ class AcceptanceTests(TestCase):
                 "last_name": "محمدی",
                 "national_id": "0087654326",
                 "relationship": Relationship.SPOUSE,
-                "birth_date": "1991-03-15",
+                "birth_date": "1369/12/24",
             },
         )
         self.assertEqual(response.status_code, 302)
@@ -113,7 +113,7 @@ class AcceptanceTests(TestCase):
                 "last_name": "غیرمجاز",
                 "national_id": "0499370899",
                 "relationship": Relationship.SELF,
-                "birth_date": "1985-01-30",
+                "birth_date": "1363/11/10",
             },
         )
         other_person = self.other.insured_people.get()
@@ -173,7 +173,7 @@ class AcceptanceTests(TestCase):
                 "last_name": "کریمی",
                 "national_id": "0023456787",
                 "relationship": Relationship.CHILD,
-                "birth_date": "2016-07-19",
+                "birth_date": "1395/04/29",
             },
         )
 

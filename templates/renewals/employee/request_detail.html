@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load jalali %}
 {% block title %}{{ renewal_request.period.title }}{% endblock %}
 {% block content %}
 <section class="heading">
@@ -6,9 +7,9 @@
     <p class="eyebrow">درخواست تمدید</p>
     <h1>{{ renewal_request.period.title }}</h1>
     <p class="muted">
-      {{ renewal_request.period.coverage_start|date:"Y/m/d" }}
+      {{ renewal_request.period.coverage_start|jalali }}
       تا
-      {{ renewal_request.period.coverage_end|date:"Y/m/d" }}
+      {{ renewal_request.period.coverage_end|jalali }}
     </p>
   </div>
   <span class="badge {{ renewal_request.status }}">{{ renewal_request.get_status_display }}</span>
@@ -18,7 +19,7 @@
   <section class="card notice">
     <h2>بازگشت برای اصلاح</h2>
     <p>{{ latest_return.comment }}</p>
-    <p class="muted">{{ latest_return.actor_label }} · {{ latest_return.created_at|date:"Y/m/d H:i" }}</p>
+    <p class="muted">{{ latest_return.actor_label }} · {{ latest_return.created_at|jalali:"datetime" }}</p>
   </section>
 {% endif %}
 
@@ -40,11 +41,11 @@
     <tbody>
       {% for line in lines %}
         <tr>
-          <td>{{ line.full_name }}</td>
-          <td dir="ltr">{{ line.national_id }}</td>
-          <td>{{ line.get_relationship_display }}</td>
-          <td dir="ltr">{{ line.birth_date|date:"Y/m/d" }}</td>
-          <td>
+          <td data-label="نام">{{ line.full_name }}</td>
+          <td data-label="کد ملی"><span dir="ltr">{{ line.national_id }}</span></td>
+          <td data-label="نسبت">{{ line.get_relationship_display }}</td>
+          <td data-label="تاریخ تولد"><span dir="ltr">{{ line.birth_date|jalali }}</span></td>
+          <td data-label="">
             {% if renewal_request.is_editable %}
               <a href="{% url 'employee_line_edit' renewal_request.pk line.pk %}">اصلاح</a>
               {% if line.relationship != "self" %}
@@ -63,7 +64,7 @@
   </table>
 
   {% if renewal_request.is_editable and available_people %}
-    <h3>افرادی که این دوره انتخاب نشده‌اند</h3>
+    <h3 style="margin-top: 40px;">افرادی که این دوره انتخاب نشده‌اند</h3>
     <ul class="plain">
       {% for person in available_people %}
         <li>
@@ -78,7 +79,7 @@
   {% endif %}
 
   {% if renewal_request.is_editable %}
-    <form method="post" action="{% url 'employee_request_submit' renewal_request.pk %}">
+    <form method="post" data-confirm="بفرست" action="{% url 'employee_request_submit' renewal_request.pk %}">
       {% csrf_token %}
       <button type="submit" class="button">ارسال به منابع انسانی</button>
     </form>
@@ -92,7 +93,7 @@
       {% for decision in history %}
         <li>
           <strong>{{ decision.get_action_display }}</strong>
-          <span class="muted">{{ decision.actor_label }} · {{ decision.created_at|date:"Y/m/d H:i" }}</span>
+          <span class="muted">{{ decision.actor_label }} · {{ decision.created_at|jalali:"datetime" }}</span>
           {% if decision.comment %}<p>{{ decision.comment }}</p>{% endif %}
         </li>
       {% endfor %}

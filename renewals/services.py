@@ -16,7 +16,7 @@ from renewals.models import (
     RenewalRequest,
     RequestStatus,
 )
-from renewals.validators import validate_national_id
+from renewals.validators import normalize_national_id, validate_national_id
 
 class WorkflowError(Exception):
     def __init__(self, message):
@@ -78,7 +78,7 @@ def include_person(renewal_request, actor, person):
         raise AccessDenied("شما به این فرد دسترسی ندارید.")
     if renewal_request.coverage_lines.filter(person=person).exists():
         raise WorkflowError("این فرد از قبل در درخواست انتخاب شده است.")
-    _reject_duplicate_national_id(renewal_request, person.national_id)
+    _reject_duplicate_national_id(renewal_request, person.national_id, person=person)
     with transaction.atomic():
         line = _copy_line(renewal_request, person)
         renewal_request.save()
@@ -203,7 +203,7 @@ def _copy_line(renewal_request, person):
 def _clean_member(payload):
     first_name = (payload.get("first_name") or "").strip()
     last_name = (payload.get("last_name") or "").strip()
-    national_id = (payload.get("national_id") or "").strip()
+    national_id = normalize_national_id(payload.get("national_id"))
     relationship = payload.get("relationship")
     birth_date = payload.get("birth_date")
     if not first_name or not last_name:
@@ -229,16 +229,20 @@ def _clean_member(payload):
     }
 
 
+def _same_national_id(stored, incoming):
+    return normalize_national_id(stored) == normalize_national_id(incoming)
+
+
 def _reject_duplicate_national_id(renewal_request, national_id, line=None, person=None):
-    lines = renewal_request.coverage_lines.filter(national_id=national_id)
+    lines = renewal_request.coverage_lines.all()
     if line is not None:
         lines = lines.exclude(pk=line.pk)
-    if lines.exists():
+    if any(_same_national_id(item.national_id, national_id) for item in lines):
         raise WorkflowError("این کد ملی در همین درخواست تکرار شده است.")
-    people = InsuredPerson.objects.filter(national_id=national_id)
+    people = InsuredPerson.objects.all()
     if person is not None:
         people = people.exclude(pk=person.pk)
-    if people.exists():
+    if any(_same_national_id(item.national_id, national_id) for item in people):
         raise WorkflowError("این کد ملی برای فرد دیگری ثبت شده است.")
 
 

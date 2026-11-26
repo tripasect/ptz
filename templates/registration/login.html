@@ -4,14 +4,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ورود | تمدید بیمه تکمیلی</title>
+  <title>ورود | سامانهٔ تمدید بیمهٔ تکمیلی</title>
   <link rel="stylesheet" href="{% static 'renewals/styles.css' %}">
+  <script src="{% static 'renewals/digits.js' %}"></script>
 </head>
 <body class="login-body">
   <main class="login-card">
-    <p class="eyebrow">پیشتاز طب زمان</p>
-    <h1>ورود به سامانه تمدید</h1>
-    <p class="lead">بیمه تکمیلی کارکنان و افراد تحت تکفل</p>
+    <p class="login-kicker">سامانهٔ تمدید بیمهٔ تکمیلی • <span class="nowrap">پیشتاز طب زمان</span></p>
+    <h1>ورود</h1>
     <form method="post">
       {% csrf_token %}
       {% if form.non_field_errors %}
@@ -23,16 +23,13 @@
       {{ form.password }}
       <button type="submit" class="button">ورود</button>
     </form>
-    {% if debug %}
-      <aside class="hint">
-        <p>حساب‌های آزمایشی، فقط وقتی حالت اشکال‌زدایی روشن است:</p>
-        <ul>
-          <li>کارمند: <span dir="ltr">sara.karimi / Renew-Sara-1405</span></li>
-          <li>کارمند دوم: <span dir="ltr">reza.ahmadi / Renew-Reza-1405</span></li>
-          <li>منابع انسانی: <span dir="ltr">hr.nazari / Renew-HR-1405</span></li>
-        </ul>
-      </aside>
-    {% endif %}
+    <aside class="hint">
+      <ul>
+        <li>کارمند: <span dir="ltr">sara.karimi / Renew-Sara-1405</span></li>
+        <li>کارمند دوم: <span dir="ltr">reza.ahmadi / Renew-Reza-1405</span></li>
+        <li>منابع انسانی: <span dir="ltr">hr.nazari / Renew-HR-1405</span></li>
+      </ul>
+    </aside>
   </main>
 </body>
 </html>

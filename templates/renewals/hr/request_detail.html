@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load jalali %}
 {% block title %}بررسی درخواست{% endblock %}
 {% block content %}
 <section class="heading">
@@ -24,10 +25,10 @@
     <tbody>
       {% for line in lines %}
         <tr>
-          <td>{{ line.full_name }}</td>
-          <td dir="ltr">{{ line.national_id }}</td>
-          <td>{{ line.get_relationship_display }}</td>
-          <td dir="ltr">{{ line.birth_date|date:"Y/m/d" }}</td>
+          <td data-label="نام">{{ line.full_name }}</td>
+          <td data-label="کد ملی"><span dir="ltr">{{ line.national_id }}</span></td>
+          <td data-label="نسبت">{{ line.get_relationship_display }}</td>
+          <td data-label="تاریخ تولد"><span dir="ltr">{{ line.birth_date|jalali }}</span></td>
         </tr>
       {% endfor %}
     </tbody>
@@ -36,14 +37,14 @@
 
 {% if renewal_request.is_reviewable %}
   <section class="grid">
-    <form method="post" action="{% url 'hr_request_approve' renewal_request.pk %}" class="card">
+    <form method="post" data-confirm="پذیرفتم" action="{% url 'hr_request_approve' renewal_request.pk %}" class="card">
       {% csrf_token %}
       <h2>تأیید نهایی</h2>
       <p class="muted">پس از تأیید، درخواست دیگر قابل ویرایش نیست.</p>
       {% include "renewals/_fields.html" with form=approve_form %}
       <button type="submit" class="button">تأیید نهایی</button>
     </form>
-    <form method="post" action="{% url 'hr_request_return' renewal_request.pk %}" class="card">
+    <form method="post" data-confirm="برگردان" action="{% url 'hr_request_return' renewal_request.pk %}" class="card">
       {% csrf_token %}
       <h2>بازگشت برای اصلاح</h2>
       {% include "renewals/_fields.html" with form=return_form %}
@@ -61,7 +62,7 @@
       {% for decision in history %}
         <li>
           <strong>{{ decision.get_action_display }}</strong>
-          <span class="muted">{{ decision.actor_label }} · {{ decision.created_at|date:"Y/m/d H:i" }}</span>
+          <span class="muted">{{ decision.actor_label }} · {{ decision.created_at|jalali:"datetime" }}</span>
           {% if decision.comment %}<p>{{ decision.comment }}</p>{% endif %}
         </li>
       {% endfor %}

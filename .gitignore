@@ -6,3 +6,9 @@ db.sqlite3
 .DS_Store
 .idea/
 .vscode/
+.cursor/
+
+# Interview notes and the assignment brief. Not part of the application.
+PRESENTATION.md
+Senior_Backend_Developer_Task.md
+Senior_Backend_Developer_Task_En.md

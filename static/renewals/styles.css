@@ -1,32 +1,119 @@
 :root {
-  --ink: #1c2430;
-  --muted: #5c6770;
-  --paper: #f4f1ea;
-  --card: #fffdf9;
-  --line: #e3ddd2;
-  --teal: #0f5c56;
-  --teal-dark: #0b433e;
-  --danger: #8d2f2f;
-  --ok: #1d6b3a;
-  --warn: #8a5a12;
-  --info: #1f4e79;
+  --navy: #071633;
+  --white: #ffffff;
+}
+
+@font-face {
+  font-family: IRANSansX;
+  src: url("../fonts/IRANSansXFaNum-Thin.woff2") format("woff2");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: IRANSansX;
+  src: url("../fonts/IRANSansXFaNum-UltraLight.woff2") format("woff2");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: IRANSansX;
+  src: url("../fonts/IRANSansXFaNum-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: IRANSansX;
+  src: url("../fonts/IRANSansXFaNum-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: IRANSansX;
+  src: url("../fonts/IRANSansXFaNum-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: IRANSansX;
+  src: url("../fonts/IRANSansXFaNum-DemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: IRANSansX;
+  src: url("../fonts/IRANSansXFaNum-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: IRANSansX;
+  src: url("../fonts/IRANSansXFaNum-ExtraBold.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: IRANSansX;
+  src: url("../fonts/IRANSansXFaNum-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: IRANSansX;
+  src: url("../fonts/IRANSansXFaNum-ExtraBlack.woff2") format("woff2");
+  font-weight: 950;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: IRANSansX;
+  src: url("../fonts/IRANSansXFaNum-Heavy.woff2") format("woff2");
+  font-weight: 1000;
+  font-style: normal;
+  font-display: swap;
 }
 
 * { box-sizing: border-box; }
 
+html {
+  font-family: IRANSansX, Tahoma, sans-serif;
+}
+
+html { font-size: 93.75%; }
+
 body {
   margin: 0;
-  color: var(--ink);
-  background: var(--paper);
-  font-family: "Geeza Pro", Tahoma, sans-serif;
+  color: var(--navy);
+  background: var(--white);
+  font-family: IRANSansX, Tahoma, sans-serif;
+  font-weight: 400;
   line-height: 1.6;
 }
 
-a { color: var(--teal-dark); }
+a, a:visited { color: var(--navy); }
+:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
 
 .topbar {
-  background: var(--ink);
-  color: #fff;
+  background: var(--navy);
+  color: var(--white);
 }
 
 .bar, .page {
@@ -42,8 +129,8 @@ a { color: var(--teal-dark); }
   gap: 16px;
 }
 
-.brand {
-  color: #fff;
+.brand, .brand:visited {
+  color: var(--white);
   font-weight: 700;
   text-decoration: none;
 }
@@ -54,7 +141,15 @@ a { color: var(--teal-dark); }
   gap: 14px;
 }
 
-.nav a, .who { color: #f4f1ea; text-decoration: none; }
+.nav a, .nav a:visited, .who { color: var(--white); text-decoration: none; }
+
+.who { font-weight: 600; white-space: nowrap; }
+
+.nav a, .nav .linkish {
+  border: 1px solid var(--white);
+  padding: 6px 12px;
+  margin: 6px 0;
+}
 
 .page { padding: 28px 0 64px; }
 
@@ -65,29 +160,28 @@ a { color: var(--teal-dark); }
   gap: 16px;
 }
 
-h1, h2, h3 { margin: 0 0 8px; line-height: 1.3; }
-h1 { font-size: 1.7rem; }
-h2 { font-size: 1.15rem; }
+h1, h2, h3 { margin: 0 0 8px; line-height: 1.3; font-weight: 700; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.1rem; }
 
 .eyebrow {
   margin: 0 0 4px;
-  color: var(--teal);
+  color: var(--navy);
   font-size: 0.85rem;
+  font-weight: 600;
 }
 
-.muted { color: var(--muted); }
-.lead { color: var(--muted); }
+.muted, .lead, .hint { color: var(--navy); font-weight: 400; }
 
 .card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  background: var(--white);
+  border: 1px solid var(--navy);
   padding: 20px;
   margin: 16px 0;
 }
 
 .card.narrow { width: min(560px, 100%); }
-.card.notice { border-color: #efd3a3; background: #fff8ee; }
+.card.notice { border-width: 2px; }
 
 .grid {
   display: grid;
@@ -104,53 +198,68 @@ table {
 th, td {
   text-align: right;
   padding: 10px 8px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--navy);
   vertical-align: top;
 }
 
-th { color: var(--muted); font-weight: 600; font-size: 0.92rem; }
+tr:last-child td { border-bottom: none; }
+
+th { color: var(--navy); font-weight: 700; font-size: 0.92rem; }
 
 .badge {
   display: inline-block;
-  padding: 2px 10px;
-  border-radius: 999px;
-  background: #ece7df;
+  padding: 2px 8px;
+  border: 1px solid var(--navy);
+  background: var(--white);
+  color: var(--navy);
   font-size: 0.9rem;
 }
 
-.badge.draft { background: #ece7df; }
-.badge.submitted { background: #d9e7f5; color: var(--info); }
-.badge.needs_correction { background: #f8e7c8; color: var(--warn); }
-.badge.approved { background: #d9efe1; color: var(--ok); }
+.badge.approved {
+  background: var(--navy);
+  color: var(--white);
+}
 
-.button, button.button {
+.button,
+button.button,
+a.button:visited,
+a.button:hover {
   display: inline-block;
-  border: 0;
-  border-radius: 10px;
-  background: var(--teal);
-  color: #fff;
+  border: 1px solid var(--navy);
+  background: var(--navy);
+  color: var(--white);
   padding: 10px 16px;
   text-decoration: none;
   cursor: pointer;
   font: inherit;
+  font-weight: 600;
 }
 
-.button.secondary { background: #4d5963; }
-.button.danger, button.danger { background: var(--danger); }
+.button.secondary,
+.button.danger,
+button.danger,
+a.button.secondary:visited,
+a.button.secondary:hover {
+  background: var(--white);
+  color: var(--navy);
+}
 
 .button + .button, .button + a.button { margin-right: 8px; }
+
+form .button { margin-top: 16px; }
+.filters .button { margin-top: 0; }
 
 .linkish {
   border: 0;
   background: transparent;
-  color: #d7efe9;
+  color: var(--white);
   cursor: pointer;
   font: inherit;
   padding: 0;
 }
 
-main .linkish { color: var(--teal-dark); }
-.linkish.danger { color: var(--danger); }
+main .linkish,
+main .linkish.danger { color: var(--navy); text-decoration: underline; }
 
 form.inline { display: inline; }
 
@@ -158,11 +267,11 @@ label { display: block; margin: 12px 0 4px; }
 
 .input, input[type="text"], input[type="password"], input[type="date"], select, textarea {
   width: 100%;
-  border: 1px solid var(--line);
-  border-radius: 10px;
+  border: 1px solid var(--navy);
   padding: 10px 12px;
   font: inherit;
-  background: #fff;
+  color: var(--navy);
+  background: var(--white);
 }
 
 .filters {
@@ -178,14 +287,14 @@ label { display: block; margin: 12px 0 4px; }
 .messages { list-style: none; padding: 0; }
 .message {
   padding: 10px 12px;
-  border-radius: 10px;
   margin: 8px 0;
-  background: #e7f2ef;
+  border: 1px solid var(--navy);
+  background: var(--white);
+  color: var(--navy);
 }
-.message.error, .message.errorlist { background: #fde8e8; color: var(--danger); }
-.message.success { background: #e5f6ea; color: var(--ok); }
-.field-error { color: var(--danger); margin: 4px 0 0; }
-.errorlist { list-style: none; padding: 0; margin: 8px 0; color: var(--danger); }
+.message.success { background: var(--navy); color: var(--white); }
+.field-error { color: var(--navy); font-weight: 700; margin: 4px 0 0; }
+.errorlist { list-style: none; padding: 0; margin: 8px 0; color: var(--navy); font-weight: 700; }
 
 .timeline { margin: 0; padding-right: 18px; }
 .timeline li { margin: 12px 0; }
@@ -200,23 +309,105 @@ label { display: block; margin: 12px 0 4px; }
 
 .login-card {
   width: min(440px, calc(100% - 32px));
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 16px;
+  background: var(--white);
+  border: 1px solid var(--navy);
   padding: 28px;
 }
+
+.login-kicker {
+  margin: 0 0 8px;
+  font-size:1rem;
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+.login-card h1 { font-size: 2rem; margin-bottom: 16px; }
+.nowrap { white-space: nowrap; }
 
 .hint {
   margin-top: 18px;
   padding-top: 12px;
-  border-top: 1px solid var(--line);
-  color: var(--muted);
+  border-top: 1px solid var(--navy);
+  color: var(--navy);
   font-size: 0.92rem;
+  font-weight: 400;
 }
 
 .hint ul { padding-right: 18px; }
 
+input.jalali-picker { display: none; }
+
+.jalali-selects {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr 0.8fr;
+  gap: 8px;
+}
+
+#confirm-dialog {
+  border: 1px solid var(--navy);
+  padding: 24px;
+  width: min(420px, calc(100% - 32px));
+  color: var(--navy);
+  background: var(--white);
+}
+
+#confirm-dialog::backdrop { background: rgba(7, 22, 51, 0.45); }
+
+#confirm-dialog input {
+  width: 100%;
+  border: 1px solid var(--navy);
+  padding: 10px 12px;
+  font: inherit;
+  color: var(--navy);
+  background: var(--white);
+}
+
+.confirm-actions { display: flex; gap: 8px; margin-top: 16px; }
+
 @media (max-width: 800px) {
-  .grid, .heading, .split, .bar { display: block; }
-  .nav { margin-top: 8px; }
+  .grid, .heading, .split { display: block; }
+
+  .bar {
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
+    padding: 14px 0;
+    gap: 12px;
+  }
+
+  .nav { flex-wrap: wrap; }
+  .nav { margin: 0; }
+  .nav a, .nav .linkish { margin: 0; }
+
+  .filters { display: block; }
+  .filters label { width: 100%; min-width: 0; margin-bottom: 12px; }
+  .jalali-selects { grid-template-columns: 1fr; }
+
+  table, thead, tbody, tr, td { display: block; width: 100%; }
+  thead { display: none; }
+
+  tr {
+    border: 1px solid var(--navy);
+    margin-top: 12px;
+    padding: 4px 12px;
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    border: 0;
+    padding: 8px 0;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: 700;
+  }
+
+  td[data-label=""]::before,
+  td[colspan]::before { content: none; }
+
+  tr:last-child td { border-bottom: 0; }
 }

@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% load jalali %}
 {% block title %}ایجاد درخواست{% endblock %}
 {% block content %}
 <section class="card narrow">
   <p class="eyebrow">درخواست جدید</p>
   {% if open_period %}
     <h1>{{ open_period.title }}</h1>
-    <p>پوشش از {{ open_period.coverage_start|date:"Y/m/d" }} تا {{ open_period.coverage_end|date:"Y/m/d" }}.</p>
+    <p>پوشش از {{ open_period.coverage_start|jalali }} تا {{ open_period.coverage_end|jalali }}.</p>
     <p>افراد تحت پوشش سال قبل روی پیش‌نویس کپی می‌شوند. بعداً می‌توانید کسی را اضافه کنید، کسی را برای این دوره برندارید، یا اطلاعات را اصلاح کنید.</p>
     <form method="post">
       {% csrf_token %}
