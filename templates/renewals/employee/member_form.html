@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{% if mode == "edit" %}اصلاح فرد{% else %}افزودن فرد{% endif %}{% endblock %}
+{% block content %}
+<section class="card narrow">
+  <p class="eyebrow">{{ renewal_request.period.title }}</p>
+  <h1>{% if mode == "edit" %}اصلاح اطلاعات{% else %}فرد جدید{% endif %}</h1>
+  <p class="muted">این تغییر روی همین درخواست و فهرست جاری شما اعمال می‌شود. رونوشت درخواست‌های دوره‌های قبل عوض نمی‌شود.</p>
+  <form method="post">
+    {% csrf_token %}
+    {% include "renewals/_fields.html" %}
+    <button type="submit" class="button">ذخیره</button>
+    <a class="button secondary" href="{% url 'employee_request_detail' renewal_request.pk %}">انصراف</a>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}درخواست‌ها{% endblock %}
+{% block content %}
+<section class="heading">
+  <div>
+    <p class="eyebrow">پنل منابع انسانی</p>
+    <h1>درخواست‌های تمدید</h1>
+  </div>
+  <a class="button secondary" href="{% url 'hr_report' %}">گزارش دوره</a>
+</section>
+
+<section class="card">
+  <form method="get" class="filters">
+    <label>
+      دوره
+      <select name="period" class="input">
+        <option value="">همه دوره‌ها</option>
+        {% for period in periods %}
+          <option value="{{ period.pk }}" {% if selected_period == period.pk|stringformat:"s" %}selected{% endif %}>{{ period.title }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>
+      وضعیت
+      <select name="status" class="input">
+        <option value="">همه وضعیت‌ها</option>
+        {% for value, label in statuses %}
+          <option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <button type="submit" class="button">اعمال فیلتر</button>
+  </form>
+  <table>
+    <thead>
+      <tr>
+        <th>دوره</th><th>کارمند</th><th>کد پرسنلی</th><th>واحد</th><th>وضعیت</th><th>افراد</th><th>ارسال</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in requests %}
+        <tr>
+          <td>{{ item.period.title }}</td>
+          <td>{{ item.employee.full_name }}</td>
+          <td dir="ltr">{{ item.employee.personnel_code }}</td>
+          <td>{{ item.employee.organizational_unit }}</td>
+          <td><span class="badge {{ item.status }}">{{ item.get_status_display }}</span></td>
+          <td>{{ item.member_count }}</td>
+          <td dir="ltr">{% if item.submitted_at %}{{ item.submitted_at|date:"Y/m/d H:i" }}{% else %}—{% endif %}</td>
+          <td><a href="{% url 'hr_request_detail' item.pk %}">بررسی</a></td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="8">درخواستی با این فیلتر پیدا نشد.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

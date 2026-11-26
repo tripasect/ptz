@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ورود | تمدید بیمه تکمیلی</title>
+  <link rel="stylesheet" href="{% static 'renewals/styles.css' %}">
+</head>
+<body class="login-body">
+  <main class="login-card">
+    <p class="eyebrow">پیشتاز طب زمان</p>
+    <h1>ورود به سامانه تمدید</h1>
+    <p class="lead">بیمه تکمیلی کارکنان و افراد تحت تکفل</p>
+    <form method="post">
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <p class="message error">{{ form.non_field_errors }}</p>
+      {% endif %}
+      <label for="{{ form.username.id_for_label }}">نام کاربری</label>
+      {{ form.username }}
+      <label for="{{ form.password.id_for_label }}">گذرواژه</label>
+      {{ form.password }}
+      <button type="submit" class="button">ورود</button>
+    </form>
+    {% if debug %}
+      <aside class="hint">
+        <p>حساب‌های آزمایشی، فقط وقتی حالت اشکال‌زدایی روشن است:</p>
+        <ul>
+          <li>کارمند: <span dir="ltr">sara.karimi / Renew-Sara-1405</span></li>
+          <li>کارمند دوم: <span dir="ltr">reza.ahmadi / Renew-Reza-1405</span></li>
+          <li>منابع انسانی: <span dir="ltr">hr.nazari / Renew-HR-1405</span></li>
+        </ul>
+      </aside>
+    {% endif %}
+  </main>
+</body>
+</html>

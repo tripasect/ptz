@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}گزارش دوره{% endblock %}
+{% block content %}
+<section class="heading">
+  <div>
+    <p class="eyebrow"><a href="{% url 'hr_request_list' %}">پنل منابع انسانی</a></p>
+    <h1>گزارش دوره</h1>
+  </div>
+</section>
+<section class="card">
+  <form method="get" class="filters">
+    <label>
+      دوره
+      <select name="period" class="input">
+        {% for period in periods %}
+          <option value="{{ period.pk }}" {% if report and report.period.pk == period.pk %}selected{% endif %}>{{ period.title }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <button type="submit" class="button">نمایش</button>
+  </form>
+  {% if report %}
+    <p>{{ report.period.title }} · مجموع درخواست‌ها: {{ report.request_total }}</p>
+    <table>
+      <thead><tr><th>وضعیت</th><th>تعداد درخواست</th></tr></thead>
+      <tbody>
+        {% for row in report.rows %}
+          <tr>
+            <td>{{ row.label }}</td>
+            <td id="status-{{ row.status }}">{{ row.total }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p>افراد انتخاب‌شده در درخواست‌های تأییدشده: <strong id="approved-people">{{ report.approved_people }}</strong></p>
+  {% else %}
+    <p>دوره‌ای برای گزارش وجود ندارد.</p>
+  {% endif %}
+</section>
+{% endblock %}

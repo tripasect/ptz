@@ -1,0 +1,8 @@
+{% if form.non_field_errors %}
+  <div class="message error">{{ form.non_field_errors }}</div>
+{% endif %}
+{% for field in form %}
+  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+  {{ field }}
+  {% if field.errors %}<p class="field-error">{{ field.errors|striptags }}</p>{% endif %}
+{% endfor %}

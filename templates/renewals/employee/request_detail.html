@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}{{ renewal_request.period.title }}{% endblock %}
+{% block content %}
+<section class="heading">
+  <div>
+    <p class="eyebrow">درخواست تمدید</p>
+    <h1>{{ renewal_request.period.title }}</h1>
+    <p class="muted">
+      {{ renewal_request.period.coverage_start|date:"Y/m/d" }}
+      تا
+      {{ renewal_request.period.coverage_end|date:"Y/m/d" }}
+    </p>
+  </div>
+  <span class="badge {{ renewal_request.status }}">{{ renewal_request.get_status_display }}</span>
+</section>
+
+{% if renewal_request.status == "needs_correction" and latest_return %}
+  <section class="card notice">
+    <h2>بازگشت برای اصلاح</h2>
+    <p>{{ latest_return.comment }}</p>
+    <p class="muted">{{ latest_return.actor_label }} · {{ latest_return.created_at|date:"Y/m/d H:i" }}</p>
+  </section>
+{% endif %}
+
+{% if not renewal_request.is_editable %}
+  <p class="muted">در این وضعیت درخواست قابل ویرایش نیست. جدول زیر رونوشت همین درخواست است.</p>
+{% endif %}
+
+<section class="card">
+  <div class="split">
+    <h2>افراد انتخاب‌شده برای این دوره</h2>
+    {% if renewal_request.is_editable %}
+      <a class="button" href="{% url 'employee_line_add' renewal_request.pk %}">افزودن فرد جدید</a>
+    {% endif %}
+  </div>
+  <table>
+    <thead>
+      <tr><th>نام</th><th>کد ملی</th><th>نسبت</th><th>تاریخ تولد</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for line in lines %}
+        <tr>
+          <td>{{ line.full_name }}</td>
+          <td dir="ltr">{{ line.national_id }}</td>
+          <td>{{ line.get_relationship_display }}</td>
+          <td dir="ltr">{{ line.birth_date|date:"Y/m/d" }}</td>
+          <td>
+            {% if renewal_request.is_editable %}
+              <a href="{% url 'employee_line_edit' renewal_request.pk line.pk %}">اصلاح</a>
+              {% if line.relationship != "self" %}
+                <form class="inline" method="post" action="{% url 'employee_line_remove' renewal_request.pk line.pk %}">
+                  {% csrf_token %}
+                  <button type="submit" class="linkish danger">حذف از این دوره</button>
+                </form>
+              {% endif %}
+            {% endif %}
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="5">هنوز فردی انتخاب نشده است.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if renewal_request.is_editable and available_people %}
+    <h3>افرادی که این دوره انتخاب نشده‌اند</h3>
+    <ul class="plain">
+      {% for person in available_people %}
+        <li>
+          {{ person.full_name }} · {{ person.get_relationship_display }}
+          <form class="inline" method="post" action="{% url 'employee_line_include' renewal_request.pk person.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="linkish">افزودن به این دوره</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if renewal_request.is_editable %}
+    <form method="post" action="{% url 'employee_request_submit' renewal_request.pk %}">
+      {% csrf_token %}
+      <button type="submit" class="button">ارسال به منابع انسانی</button>
+    </form>
+  {% endif %}
+</section>
+
+<section class="card">
+  <h2>تاریخچه بررسی</h2>
+  {% if history %}
+    <ol class="timeline">
+      {% for decision in history %}
+        <li>
+          <strong>{{ decision.get_action_display }}</strong>
+          <span class="muted">{{ decision.actor_label }} · {{ decision.created_at|date:"Y/m/d H:i" }}</span>
+          {% if decision.comment %}<p>{{ decision.comment }}</p>{% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  {% else %}
+    <p class="muted">هنوز ارسالی ثبت نشده است. ایجاد پیش‌نویس در این فهرست نمی‌آید.</p>
+  {% endif %}
+</section>
+{% endblock %}

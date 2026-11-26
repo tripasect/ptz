@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}بررسی درخواست{% endblock %}
+{% block content %}
+<section class="heading">
+  <div>
+    <p class="eyebrow"><a href="{% url 'hr_request_list' %}">بازگشت به فهرست</a></p>
+    <h1>{{ renewal_request.employee.full_name }}</h1>
+    <p class="muted">
+      {{ renewal_request.employee.personnel_code }}
+      · {{ renewal_request.employee.organizational_unit }}
+      · {{ renewal_request.period.title }}
+    </p>
+  </div>
+  <span class="badge {{ renewal_request.status }}">{{ renewal_request.get_status_display }}</span>
+</section>
+
+<section class="card">
+  <h2>افراد انتخاب‌شده</h2>
+  <p class="muted">این جدول رونوشت ذخیره‌شده روی همین درخواست است.</p>
+  <table>
+    <thead>
+      <tr><th>نام</th><th>کد ملی</th><th>نسبت</th><th>تاریخ تولد</th></tr>
+    </thead>
+    <tbody>
+      {% for line in lines %}
+        <tr>
+          <td>{{ line.full_name }}</td>
+          <td dir="ltr">{{ line.national_id }}</td>
+          <td>{{ line.get_relationship_display }}</td>
+          <td dir="ltr">{{ line.birth_date|date:"Y/m/d" }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+{% if renewal_request.is_reviewable %}
+  <section class="grid">
+    <form method="post" action="{% url 'hr_request_approve' renewal_request.pk %}" class="card">
+      {% csrf_token %}
+      <h2>تأیید نهایی</h2>
+      <p class="muted">پس از تأیید، درخواست دیگر قابل ویرایش نیست.</p>
+      {% include "renewals/_fields.html" with form=approve_form %}
+      <button type="submit" class="button">تأیید نهایی</button>
+    </form>
+    <form method="post" action="{% url 'hr_request_return' renewal_request.pk %}" class="card">
+      {% csrf_token %}
+      <h2>بازگشت برای اصلاح</h2>
+      {% include "renewals/_fields.html" with form=return_form %}
+      <button type="submit" class="button danger">بازگشت به کارمند</button>
+    </form>
+  </section>
+{% else %}
+  <p class="muted">تأیید و بازگشت فقط برای درخواست ارسال‌شده فعال است.</p>
+{% endif %}
+
+<section class="card">
+  <h2>تاریخچه بررسی</h2>
+  {% if history %}
+    <ol class="timeline">
+      {% for decision in history %}
+        <li>
+          <strong>{{ decision.get_action_display }}</strong>
+          <span class="muted">{{ decision.actor_label }} · {{ decision.created_at|date:"Y/m/d H:i" }}</span>
+          {% if decision.comment %}<p>{{ decision.comment }}</p>{% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  {% else %}
+    <p class="muted">هنوز تصمیمی ثبت نشده است.</p>
+  {% endif %}
+</section>
+{% endblock %}

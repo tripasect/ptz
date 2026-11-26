@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}دسترسی مجاز نیست{% endblock %}
+{% block content %}
+<section class="card narrow">
+  <h1>دسترسی مجاز نیست</h1>
+  <p>این بخش برای نقش شما باز نیست.</p>
+  <a class="button" href="{% url 'home' %}">بازگشت</a>
+</section>
+{% endblock %}

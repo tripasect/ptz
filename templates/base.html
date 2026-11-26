@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}تمدید بیمه تکمیلی{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'renewals/styles.css' %}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="bar">
+      <a class="brand" href="{% url 'home' %}">تمدید بیمه تکمیلی</a>
+      <nav class="nav">
+        {% if user.is_authenticated %}
+          {% if user.employee %}
+            <a href="{% url 'employee_dashboard' %}">درخواست‌های من</a>
+          {% endif %}
+          {% for group in user.groups.all %}
+            {% if group.name == "hr" %}
+              <a href="{% url 'hr_request_list' %}">بررسی درخواست‌ها</a>
+            {% endif %}
+          {% endfor %}
+          <span class="who">{{ user.get_full_name|default:user.username }}</span>
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="linkish">خروج</button>
+          </form>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+  <main class="page">
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="message {{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
